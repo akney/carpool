@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import assignment6.VertexNotFoundException2;
-import assignment6.DijkstrasDigraph2.DigraphNode;
-
 public class PrimsDigraph {
 
 	private ArrayList<DigraphNode> vertices;

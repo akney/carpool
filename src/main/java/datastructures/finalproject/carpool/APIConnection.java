@@ -12,19 +12,21 @@ import com.google.maps.model.GeocodedWaypointStatus;
 
 public class APIConnection {
 
-	private GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAcK9f_4VyyN2Klzu3D_khJlgxacckz0jw");
-	private DirectionsResult directions;
+	public static VirtualEdge createVirtualEdge(String origin, String destination)
+			throws ApiException, InterruptedException, IOException {
+		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAcK9f_4VyyN2Klzu3D_khJlgxacckz0jw");
 
-	public APIConnection(String origin, String destination) throws ApiException, InterruptedException, IOException {
+		DirectionsResult directions;
 		DirectionsApiRequest request = DirectionsApi.getDirections(context, origin, destination);
 		directions = request.await();
+
+		VirtualEdge vedge = new VirtualEdge(directions);
+
 		if (directions.geocodedWaypoints[0].geocoderStatus.equals(GeocodedWaypointStatus.ZERO_RESULTS)) {
 			throw new ZeroResultsException("No results for this route, make sure your info is correct.");
 		}
 
-	}
+		return vedge;
 
-	public double getDistance() throws ApiException, InterruptedException, IOException {
-		return directions.routes[0].legs[0].distance.inMeters; // returns meters
 	}
 }

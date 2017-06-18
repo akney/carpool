@@ -40,6 +40,8 @@ public class InputFrame extends JFrame {
 		add(instructions2);
 
 		add(scroll1);
+		input.setWrapStyleWord(true);
+		input.setLineWrap(true);
 		add(calculate);
 		add(replyLabel);
 		reply.setEditable(false);
@@ -60,7 +62,7 @@ public class InputFrame extends JFrame {
 						// destination
 						// going
 						// through all points
-						graph.PrimsAlgorithm();
+						graph.orderStops();
 
 						reply.setText(graph.displayLocationsInOrder());
 					} catch (ApiException | InterruptedException | IOException e) {

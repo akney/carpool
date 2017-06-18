@@ -16,8 +16,6 @@ public class VirtualEdge {
 		this.directions = directions;
 		this.distance = directions.routes[0].legs[0].distance.inMeters; // returns
 																		// meters
-		this.point1 = new DigraphNode(directions.routes[0].legs[0].startAddress);
-		this.point2 = new DigraphNode(directions.routes[0].legs[0].endAddress);
 	}
 
 	public DigraphNode getPoint1() {
@@ -26,6 +24,14 @@ public class VirtualEdge {
 
 	public DigraphNode getPoint2() {
 		return point2;
+	}
+
+	public String getFromAddress() {
+		return directions.routes[0].legs[0].startAddress;
+	}
+
+	public String getToAddress() {
+		return directions.routes[0].legs[0].endAddress;
 	}
 
 	public double getDistance() {

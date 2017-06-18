@@ -20,11 +20,13 @@ public class InputFrame extends JFrame {
 	JLabel instructions2 = new JLabel(
 			"Make sure to list the starting location first and the final destination last. Press calculate when all locations have been entered.");
 	JTextArea input = new JTextArea(5, 20);
-	JScrollPane scroll1 = new JScrollPane(input);
+	JScrollPane scroll1 = new JScrollPane(input, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	JButton calculate = new JButton("Calculate");
 	JLabel replyLabel = new JLabel("Shortest Route: ");
 	JTextArea reply = new JTextArea(5, 20);
-	JScrollPane scroll2 = new JScrollPane(reply);
+	JScrollPane scroll2 = new JScrollPane(reply, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 	public InputFrame() {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

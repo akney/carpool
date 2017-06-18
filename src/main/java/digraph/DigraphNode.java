@@ -1,11 +1,12 @@
-package digraphs;
+package digraph;
 
 public class DigraphNode implements Comparable<DigraphNode> {
 
 	private String name;
 
 	private String shortestPath;
-	private Integer shortestDistance;	//distance of the shortest possible route to reach this vertex
+	private Double shortestDistance; // distance of the shortest possible route
+										// to reach this vertex
 	private boolean visited;
 
 	public DigraphNode(String name) {
@@ -23,12 +24,12 @@ public class DigraphNode implements Comparable<DigraphNode> {
 		this.shortestPath = shortestPath;
 	}
 
-	public Integer getShortestDistance() {
+	public Double getShortestDistance() {
 		return shortestDistance;
 	}
 
-	public void setShortestDistance(int shortestDistance) {
-		this.shortestDistance = shortestDistance;
+	public void setShortestDistance(Double possibleDistance) {
+		this.shortestDistance = possibleDistance;
 	}
 
 	public boolean isVisited() {

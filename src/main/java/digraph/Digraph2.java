@@ -30,7 +30,7 @@ public class Digraph2 {
 													// that is a reference to
 													// the digraph node).
 
-	int placeholder = 0; // number of elements occupied in masterList
+	int placeholder = 0; // number of lists instantiated in masterList
 	LinkedList<DigraphNode> stops;
 
 	public Digraph2(String[] locations) throws ApiException, InterruptedException, IOException {
@@ -48,37 +48,33 @@ public class Digraph2 {
 	 * @throws ApiException
 	 */
 	private void populateGraph(String[] locations) throws ApiException, InterruptedException, IOException {
+		int ix = 0;
+		for (String s : locations) {
+			LinkedList<VirtualEdge> tmpEdgeList = new LinkedList<VirtualEdge>();
+			VirtualEdge e = APIConnection.createVirtualEdge(s, s);
+			e.setPoint1(getNode(e.getFromAddress()));
+			e.setPoint2(e.getPoint1());
+			tmpEdgeList.add(e);
+
+			masterList[ix++] = tmpEdgeList;
+			placeholder++;
+		}
 
 		// get edges of all points going to all points
 		// excluding those that go to the starting point (first member of
 		// locations array)
 		// and those that go to the final destination
 		for (int i = 0; i < locations.length - 1; i++) {
-			LinkedList<VirtualEdge> tmpEdgeList = new LinkedList<VirtualEdge>();
 			for (int j = 1; j < locations.length - 1; j++) {
 				if (i != j) { // don't need edges going from point to self
 					VirtualEdge e = APIConnection.createVirtualEdge(locations[i], locations[j]);
 					e.setPoint1(getNode(e.getFromAddress()));
 					e.setPoint2(getNode(e.getToAddress()));
-					tmpEdgeList.add(e);
-
+					masterList[i].add(e);
 				}
 			}
-			// masterList[i] = new LinkedList<VirtualEdge>();
-			masterList[i] = tmpEdgeList;
-			placeholder++;
-		}
-		// add final destination
-		LinkedList<VirtualEdge> tmpEdgeList = new LinkedList<VirtualEdge>();
-		// masterList[locations.length - 1] = new LinkedList<VirtualEdge>();
-		VirtualEdge e = APIConnection.createVirtualEdge(locations[locations.length - 1],
-				locations[locations.length - 1]);
-		e.setPoint1(getNode(e.getFromAddress()));
-		e.setPoint2(getNode(e.getToAddress()));
-		tmpEdgeList.add(e);
-		masterList[locations.length - 1] = tmpEdgeList;
 
-		placeholder++;
+		}
 	}
 
 	public boolean setStartingNode(String name) {
@@ -105,11 +101,11 @@ public class Digraph2 {
 	 */
 	private DigraphNode getNode(String name) {
 		for (int ix = 0; ix < placeholder; ix++) {
-
-			if (masterList[ix].getFirst().getPoint1().getName().equals(name)) {
-				return masterList[ix].getFirst().getPoint1();
+			if (!masterList[ix].isEmpty()) {
+				if (masterList[ix].getFirst().getPoint1().getName().equals(name)) {
+					return masterList[ix].getFirst().getPoint1();
+				}
 			}
-
 		}
 		return new DigraphNode(name);
 	}
@@ -124,7 +120,7 @@ public class Digraph2 {
 		double shortest;
 		// add origin node to the beginning of the list of stops
 		DigraphNode destination = masterList[0].getFirst().getPoint1();
-		stops.add(destination);
+		stops.add(getNode(destination.getName()));
 		numStops++;
 
 		while (numStops < masterList.length - 1) {
@@ -133,7 +129,8 @@ public class Digraph2 {
 					ix2 = 0;
 					// set first unvisited value to base shortest path
 					while (true) {
-						if (masterList[ix].get(ix2).getPoint2().isVisited())
+
+						if (!stops.contains(masterList[ix].getFirst().getPoint2()))
 							destination = masterList[ix].getFirst().getPoint2();
 						shortest = masterList[ix].get(ix2).getDistance();
 						break;
@@ -147,7 +144,7 @@ public class Digraph2 {
 						}
 					}
 
-					stops.add(destination);
+					stops.add(getNode(destination.getName()));
 					destination.setVisited(true);
 					numStops++;
 					break;

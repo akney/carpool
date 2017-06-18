@@ -14,7 +14,7 @@ public class Main {
 			int choice = 0;
 			do {
 
-				choice = menu(input);
+				choice = menu();
 
 				switch (choice) {
 				case 1:
@@ -48,7 +48,8 @@ public class Main {
 
 	}
 
-	public static int menu(Scanner input) {
+	public static int menu() {
+		Scanner input = new Scanner(System.in);
 		System.out.println("\n1. Enter new locations" + "\n2. Exit");
 
 		int choice = input.nextInt();

@@ -49,7 +49,6 @@ public class InputFrame extends JFrame {
 
 		calculate.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String locs = input.getText();
 				if (!locs.trim().equals("")) {

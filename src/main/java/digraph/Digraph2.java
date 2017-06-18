@@ -1,9 +1,7 @@
 package digraph;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 import com.google.maps.errors.ApiException;
 
@@ -49,6 +47,7 @@ public class Digraph2 {
 	 */
 	private void populateGraph(String[] locations) throws ApiException, InterruptedException, IOException {
 		int ix = 0;
+		// setting up from nodes (first node in each linked list)
 		for (String s : locations) {
 			LinkedList<VirtualEdge> tmpEdgeList = new LinkedList<VirtualEdge>();
 			VirtualEdge e = APIConnection.createVirtualEdge(s, s);
@@ -111,8 +110,7 @@ public class Digraph2 {
 	}
 
 	/**
-	 * find the shortest path starting from the first node that was inserted
-	 * through all sother nodes to the final destination.
+	 * find the shortest path starting from the first node that was inserted through all other nodes to the final destination.
 	 */
 	public void orderStops() {
 		this.stops = new LinkedList<DigraphNode>();
@@ -126,14 +124,16 @@ public class Digraph2 {
 		while (numStops < masterList.length - 1) {
 			for (int ix = 0; ix < masterList.length - 1; ix++) {
 				if (masterList[ix].getFirst().getPoint1().compareTo(stops.getLast()) == 0) {
-					ix2 = 0;
+					ix2 = 1;
 					// set first unvisited value to base shortest path
 					while (true) {
 
-						if (!stops.contains(masterList[ix].getFirst().getPoint2()))
-							destination = masterList[ix].getFirst().getPoint2();
-						shortest = masterList[ix].get(ix2).getDistance();
-						break;
+						if (!stops.contains(masterList[ix].get(ix2).getPoint2())) {
+							destination = masterList[ix].get(ix2).getPoint2();
+							shortest = masterList[ix].get(ix2).getDistance();
+							break;
+						}
+						ix2++;
 					}
 
 					// check for shorter paths
@@ -145,7 +145,6 @@ public class Digraph2 {
 					}
 
 					stops.add(getNode(destination.getName()));
-					destination.setVisited(true);
 					numStops++;
 					break;
 				}
@@ -159,8 +158,7 @@ public class Digraph2 {
 
 	/**
 	 * 
-	 * @return String of All destinations in order of shortest route from origin
-	 *         to final destination through all other points
+	 * @return String of All destinations in order of shortest route from origin to final destination through all other points
 	 * 
 	 */
 
